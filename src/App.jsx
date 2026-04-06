@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { supabase } from './supabase';
 import Login from './components/Login';
 import Dashboard from './components/Dashboard';
@@ -54,7 +54,7 @@ export default function App() {
   }, []);
 
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Routes>
         {/* Default: redirect root to /dashboard (ProtectedRoute handles the rest) */}
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
@@ -80,6 +80,6 @@ export default function App() {
         {/* Catch-all */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   );
 }

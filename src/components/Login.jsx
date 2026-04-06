@@ -10,7 +10,7 @@ export default function Login() {
     setLoadingProvider(provider);
     const { error: err } = await supabase.auth.signInWithOAuth({
       provider,
-      options: { redirectTo: `${window.location.origin}/dashboard` },
+      options: { redirectTo: window.location.origin + import.meta.env.BASE_URL },
     });
     if (err) {
       setError(err.message);
@@ -27,21 +27,21 @@ export default function Login() {
         {error && <p className="auth-error" role="alert">{error}</p>}
 
         <button
-          className="btn btn-oauth btn-google"
+          className="btn btn-oauth"
           onClick={() => signIn('google')}
-          disabled={!!loading}
+          disabled={!!loadingProvider}
         >
           <GoogleIcon />
-          {loading === 'google' ? 'Redirecting…' : 'Continue with Google'}
+          {loadingProvider === 'google' ? 'Redirecting…' : 'Continue with Google'}
         </button>
 
         <button
           className="btn btn-oauth btn-github"
           onClick={() => signIn('github')}
-          disabled={!!loading}
+          disabled={!!loadingProvider}
         >
           <GitHubIcon />
-          {loading === 'github' ? 'Redirecting…' : 'Continue with GitHub'}
+          {loadingProvider === 'github' ? 'Redirecting…' : 'Continue with GitHub'}
         </button>
       </div>
     </div>
