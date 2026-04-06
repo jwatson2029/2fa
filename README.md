@@ -21,7 +21,8 @@ No backend required — all auth is handled by Supabase.
 
 ```
 src/
-├── supabase.js            # Supabase client (reads env vars)
+├── supabase.js            # Supabase client (hard-coded credentials)
+├── saml.js                # Google SAML IdP constants
 ├── App.jsx                # Router + session state + route guards
 ├── index.css              # Global styles
 └── components/
@@ -29,20 +30,50 @@ src/
     ├── Register.jsx       # Sign-up with validation
     ├── Dashboard.jsx      # Protected page showing user email/provider
     └── ResetPassword.jsx  # Password-reset request form
+supabase/
+├── config.toml            # Supabase CLI config (project: qjvwjszfpuimpmagpzqy)
+└── migrations/
+    └── 20260406000000_init.sql   # profiles table, RLS policies, new-user trigger
 ```
 
 ---
 
-## 1 — Set up a free Supabase project
+## 1 — Supabase project
 
-1. Go to <https://supabase.com> and create a free account.
-2. Click **New project**, choose a name and strong database password.
-3. After the project initialises, open **Settings → API**.
-4. Copy the **Project URL** and the **anon / public** key (labelled *publishable* in newer dashboards).
+Project URL: `https://qjvwjszfpuimpmagpzqy.supabase.co`  
+Credentials are already hard-coded in `src/supabase.js`.
 
 ---
 
-## 2 — Configure environment variables
+## 2 — Run the SQL migration
+
+The file `supabase/migrations/20260406000000_init.sql` creates:
+
+* **`public.profiles`** — one row per user (id, email, provider, created_at)
+* **RLS policies** — each user can only read/update their own profile
+* **`on_auth_user_created` trigger** — auto-populates `profiles` on every sign-up (email or SAML SSO)
+
+### Option A — Supabase SQL Editor (easiest)
+
+1. Open <https://supabase.com/dashboard/project/qjvwjszfpuimpmagpzqy/sql>
+2. Paste the contents of `supabase/migrations/20260406000000_init.sql`
+3. Click **Run**
+
+### Option B — Supabase CLI
+
+```bash
+# 1. Log in with your personal access token
+#    (generate one at https://supabase.com/dashboard/account/tokens)
+npx supabase login
+
+# 2. Link to the project
+npx supabase link --project-ref qjvwjszfpuimpmagpzqy
+
+# 3. Push the migration
+npx supabase db push
+```
+
+---
 
 ```bash
 cp .env.example .env.local
