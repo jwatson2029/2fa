@@ -2,9 +2,7 @@ import { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { supabase } from './supabase';
 import Login from './components/Login';
-import Register from './components/Register';
 import Dashboard from './components/Dashboard';
-import ResetPassword from './components/ResetPassword';
 
 /**
  * ProtectedRoute – renders `children` only when a Supabase session exists.
@@ -68,20 +66,6 @@ export default function App() {
               <Login />
             </PublicRoute>
           }
-        />
-
-        <Route
-          path="/register"
-          element={
-            <PublicRoute session={session}>
-              <Register />
-            </PublicRoute>
-          }
-        />
-
-        <Route
-          path="/reset-password"
-          element={<ResetPassword />}
         />
 
         <Route
