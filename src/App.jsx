@@ -1,10 +1,8 @@
 import { useEffect, useState } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { supabase } from './supabase';
 import Login from './components/Login';
-import Register from './components/Register';
 import Dashboard from './components/Dashboard';
-import ResetPassword from './components/ResetPassword';
 
 /**
  * ProtectedRoute – renders `children` only when a Supabase session exists.
@@ -56,7 +54,7 @@ export default function App() {
   }, []);
 
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Routes>
         {/* Default: redirect root to /dashboard (ProtectedRoute handles the rest) */}
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
@@ -71,20 +69,6 @@ export default function App() {
         />
 
         <Route
-          path="/register"
-          element={
-            <PublicRoute session={session}>
-              <Register />
-            </PublicRoute>
-          }
-        />
-
-        <Route
-          path="/reset-password"
-          element={<ResetPassword />}
-        />
-
-        <Route
           path="/dashboard"
           element={
             <ProtectedRoute session={session}>
@@ -96,6 +80,6 @@ export default function App() {
         {/* Catch-all */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
