@@ -12,16 +12,10 @@ import { supabase } from '../supabase';
  *
  * supabase.auth.signOut() clears the JWT and refresh token from localStorage,
  * ending the session both locally and on the Supabase server.
- *
- * app_metadata.provider is set by Supabase; 'saml' for SSO users.
  */
 export default function Dashboard({ session }) {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-
-  // Derive provider label directly from the session prop (no effect needed)
-  const rawProvider = session?.user?.app_metadata?.provider || 'email';
-  const provider = rawProvider === 'saml' ? 'Google SSO' : 'email / password';
 
   const handleLogout = async () => {
     setLoading(true);
@@ -55,7 +49,6 @@ export default function Dashboard({ session }) {
         <div className="welcome-card">
           <h1>Welcome back! 👋</h1>
           <p className="welcome-email">{email}</p>
-          <p className="welcome-meta">Signed in via <strong>{provider}</strong></p>
         </div>
       </main>
     </div>
