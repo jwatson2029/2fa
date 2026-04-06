@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { supabase } from '../supabase';
+import { SSO_DOMAIN } from '../saml';
 
 /**
  * Login page – supports:
@@ -18,11 +19,6 @@ import { supabase } from '../supabase';
  * on your Supabase project.  Supabase then redirects to the URL specified in
  * VITE_SITE_URL (or the dashboard "Site URL" setting).
  */
-
-// The email domain that triggers SAML SSO.
-// Users whose email ends with this domain will be redirected to Google.
-// Change this to your organisation's domain, e.g. "acme.com".
-const SSO_DOMAIN = import.meta.env.VITE_SSO_DOMAIN || '';
 
 export default function Login() {
   const navigate = useNavigate();
